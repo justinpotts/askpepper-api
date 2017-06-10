@@ -6,6 +6,7 @@ import requests
 import sys
 import urllib
 import string
+import config
 from stop_words import get_stop_words
 from gensim import corpora, models
 from urllib.error import HTTPError
@@ -41,9 +42,9 @@ def return_words(doc):
 
 
 class Yelp:
-    CLIENT_ID = ''
-    CLIENT_SECRET = ''
-    bearer_token = ''
+    CLIENT_ID = config.yelp['CLIENT_ID']
+    CLIENT_SECRET = config.yelp['CLIENT_SECRET']
+    bearer_token = config.yelp['bearer_token']
     API_HOST = 'https://api.yelp.com'
     SEARCH_PATH = '/v3/businesses/search'
     GRANT_TYPE = 'client_credentials'
@@ -65,10 +66,11 @@ class Yelp:
 
     def search(self, bearer_token, term, location):
         url_params = {
-            'term': 'restaurant+' + term.replace(' ', '+'),
+            'term': term.replace(' ', '+'),
             'location': location.replace(' ', '+'),
             'limit': 10,
-            'category': 'food,All'
+            'categories': 'food,restaurants',
+            'sort': 'rating'
         }
         return self.request(self.API_HOST, self.SEARCH_PATH, self.bearer_token, url_params=url_params)
 
