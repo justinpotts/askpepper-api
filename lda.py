@@ -65,9 +65,10 @@ class Yelp:
 
     def search(self, bearer_token, term, location):
         url_params = {
-            'term': term.replace(' ', '+'),
+            'term': 'restaurant+' + term.replace(' ', '+'),
             'location': location.replace(' ', '+'),
-            'limit': 10
+            'limit': 10,
+            'category': 'food,All'
         }
         return self.request(self.API_HOST, self.SEARCH_PATH, self.bearer_token, url_params=url_params)
 
